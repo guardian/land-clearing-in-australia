@@ -1,0 +1,13 @@
+https://bl.ocks.org/Andrew-Reid/496078bd5e37fd22a9b43fd6be84b36b
+
+https://github.com/d3/d3-contour
+
+https://github.com/d3/d3-geo/blob/master/README.md
+
+https://groups.google.com/forum/#!topic/d3-js/Q9SUJpqvwgA
+
+https://observablehq.com/@d3/cloud-contours?collection=@d3/d3-contour
+
+https://github.com/d3/d3-geo/blob/master/README.md
+
+https://turfjs.org/docs/#pointGrid
