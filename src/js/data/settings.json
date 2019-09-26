@@ -2,11 +2,11 @@
 
     "basemap": {
 
-        "src" : "<%= path %>/assets/basemap.jpg",
+        "src" : "<%= path %>/assets/basemap-3857.jpg",
 
-        "width" : 3000,
+        "width" : 4000,
 
-        "height" : 2835
+        "height" : 3283
 
     },
 

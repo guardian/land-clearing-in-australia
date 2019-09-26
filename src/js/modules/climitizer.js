@@ -94,17 +94,19 @@ export class Climitizer {
 
         var self = this
 
-        //this.offscreenCanvas = document.createElement('canvas')
+        this.offscreenCanvas = document.createElement('canvas')
 
-        //this.offscreenContext = this.offscreenCanvas.getContext('2d')
+        this.offscreenCanvas.width = 4000
+
+        this.offscreenCanvas.height = 3283
+
+        this.offscreenContext = this.offscreenCanvas.getContext('2d')
 
         this.image = new Image()
 
         this.image.src = this.settings.basemap.src
 
         this.image.onload = (e) => {
-
-            //self.offscreenContext.drawImage(self.image, 0, 0, self.settings.basemap.width, self.settings.basemap.height)
 
             self.create()
             
@@ -191,19 +193,29 @@ export class Climitizer {
     async drawMap() {
 
         var self = this
+
+        var nw = self.projection([104.671555,-7.237148])
+        var se = self.projection([160.569992,-46.833892])    
+        var sx = 0
+        var sy = 0
+        var sw = 4000
+        var sh = 3283
+        var dx = nw[0]
+        var dy = nw[1]
+        var dw = se[0] - nw[0]
+        var dh = se[1] - nw[1]
+        var width = se[0] - nw[0]
+        var height = se[1] - nw[1]
+        
         self.context.clearRect(0, 0, self.width, self.height);
-        //self.context.drawImage(self.image, 0, 0, self.width, self.height);
+        self.context.drawImage(self.image, sx, sy, sw, sh, dx, dy, dw, dh);        
         self.context.beginPath();
         self.path(topojson.mesh(self.states,self.states.objects.states));
         self.context.strokeStyle = "#bcbcbc";
         self.context.stroke();
         self.context.closePath();
 
-       var nw = self.projection.invert([0,0])
-
-       var se = self.projection.invert([self.width,self.height])
-
-       return { "nw" : nw, "se" : se }
+        return { "nw" : nw, "se" : se }
 
     }
 
@@ -235,31 +247,7 @@ export class Climitizer {
         self.canvas.transition().duration(750).call(self.zoom.transform, self.transform);
 
     }
-
-    convertGeoToPixel(latitude, longitude,
-                        mapWidth=1000, // in pixels
-                        mapHeight=1000, // in pixels
-                        mapLngLeft=136.511993, // in degrees. the longitude of the left side of the map (i.e. the longitude of whatever is depicted on the left-most part of the map image)
-                        mapLngRight=156.990509, // in degrees. the longitude of the right side of the map
-                        mapLatBottom=-29.841984) // in degrees.  the latitude of the bottom of the map
-      {
-
-        //136.511993,-29.841984,156.990509,-9.493932
-
-        var self = this
-        const mapLatBottomRad = mapLatBottom * Math.PI / 180
-        const latitudeRad = latitude * Math.PI / 180
-        const mapLngDelta = (mapLngRight - mapLngLeft)
-
-        const worldMapWidth = ((mapWidth / mapLngDelta) * 360) / (2 * Math.PI)
-        const mapOffsetY = (worldMapWidth / 2 * Math.log((1 + Math.sin(mapLatBottomRad)) / (1 - Math.sin(mapLatBottomRad))))
-
-        const x = (longitude - mapLngLeft) * (mapWidth / mapLngDelta)
-        const y = mapHeight - ((worldMapWidth / 2 * Math.log((1 + Math.sin(latitudeRad)) / (1 - Math.sin(latitudeRad)))) - mapOffsetY)
-
-        return {x, y} // the pixel x,y value of this point on the map image
-    }
-
+   
     animate() {
 
         var self = this
