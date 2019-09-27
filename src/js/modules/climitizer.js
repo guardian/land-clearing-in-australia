@@ -46,6 +46,12 @@ export class Climitizer {
 
         this.tickerInterval = null
 
+        this.timelineInterval = null
+
+        this.active = false
+
+        this.timer = 0
+
         this.shadow = d3.geoMercator()
                 .scale(1)
                 .translate([0,0])
@@ -60,7 +66,7 @@ export class Climitizer {
 
         this.components = {
 
-            canvasizer: new Canvasizer(`<%= path %>/assets/australia.tif`, self.settings.bbox[1])
+            canvasizer: new Canvasizer(self.settings.geotiff, self.settings.bbox[1])
 
         };
 
@@ -94,13 +100,13 @@ export class Climitizer {
 
         var self = this
 
-        this.offscreenCanvas = document.createElement('canvas')
+        this.before = new Image()
 
-        this.offscreenCanvas.width = 4000
+        this.before.src = this.settings.before
 
-        this.offscreenCanvas.height = 3283
+        this.after = new Image()
 
-        this.offscreenContext = this.offscreenCanvas.getContext('2d')
+        this.after.src = this.settings.after
 
         this.image = new Image()
 
@@ -215,6 +221,24 @@ export class Climitizer {
         self.context.stroke();
         self.context.closePath();
 
+
+        if (self.active) {
+
+            var nwba = self.projection([149.626429,-28.914100])
+            var seba = self.projection([149.879115,-29.130252])    
+            var sxba = 0
+            var syba = 0
+            var swba = 800
+            var shba = 800
+            var dxba = nwba[0]
+            var dyba = nwba[1]
+            var dwba = seba[0] - nwba[0]
+            var dhba = seba[1] - nwba[1]
+
+            self.context.drawImage(self.before, sxba, syba, swba, shba, dxba, dyba, dwba, dhba);
+
+        }
+
         return { "nw" : nw, "se" : se }
 
     }
@@ -281,6 +305,57 @@ export class Climitizer {
         }
 
         self.x = (self.x < self.y - 1) ? self.x + 1 : 0 ;
+
+    }
+
+    timeline(alpha) {
+
+        var self = this
+
+        var nw = self.projection([149.626429,-28.914100])
+        var se = self.projection([149.879115,-29.130252])    
+        var sx = 0
+        var sy = 0
+        var sw = 800
+        var sh = 800
+        var dx = nw[0]
+        var dy = nw[1]
+        var dw = se[0] - nw[0]
+        var dh = se[1] - nw[1]
+        var width = se[0] - nw[0]
+        var height = se[1] - nw[1]
+
+        self.context.drawImage(self.before, sx, sy, sw, sh, dx, dy, dw, dh);
+        self.context.save()
+        self.context.globalAlpha = alpha;
+        self.context.drawImage(self.after, sx, sy, sw, sh, dx, dy, dw, dh);
+        self.context.restore()
+
+    }
+
+    animateTimeline() {
+
+        var self = this
+
+        let alpha = self.timer / 1000 ;
+
+        if (self.timer < 1000) {
+
+            self.timeline(alpha)
+
+            self.timer = self.timer + 100
+
+        } else {
+
+            if (self.timelineInterval!=null) {
+
+                clearInterval(self.timelineInterval);
+
+                self.timelineInterval = null
+
+            }
+
+        }
 
     }
 
@@ -369,15 +444,91 @@ export class Climitizer {
 
         scrolly.addTrigger({num: 5, do: () => {
 
+            self.active = false
+
             self.drawLGAS()
             
         }});
 
         scrolly.addTrigger({num: 6, do: () => {
 
+            self.active = false
+
+            var relocate = self.geo(2)
+
+            self.relocate(relocate.translate, relocate.scale)
+
+
         }});
 
         scrolly.addTrigger({num: 7, do: () => {
+
+            console.log("7")
+
+            if (self.timelineInterval!=null) {
+
+                clearInterval(self.timelineInterval);
+
+                self.timelineInterval = null
+
+            }
+
+            self.active = true
+
+            var relocate = self.geo(3)
+
+            self.relocate(relocate.translate, relocate.scale)
+
+
+        }});
+
+
+        scrolly.addTrigger({num: 8, do: () => {
+
+            console.log("8")
+
+            if (self.timelineInterval!=null) {
+
+                clearInterval(self.timelineInterval);
+
+                self.timelineInterval = null
+
+            }
+
+            self.active = true
+
+            var relocate = self.geo(3)
+
+            self.relocate(relocate.translate, relocate.scale)
+
+        }});
+
+
+        scrolly.addTrigger({num: 9, do: () => {
+
+            console.log("9")
+
+            if (self.timelineInterval === null) {
+
+                self.timer = 0
+
+                self.timelineInterval = window.setInterval(self.animateTimeline.bind(this), 100);
+
+            }
+
+        }});
+
+        scrolly.addTrigger({num: 10, do: () => {
+
+            console.log("10")
+
+            if (self.timelineInterval!=null) {
+
+                clearInterval(self.timelineInterval);
+
+                self.timelineInterval = null
+
+            }
 
         }});
 

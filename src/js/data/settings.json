@@ -1,5 +1,7 @@
 {
 
+    "geotiff" : "<%= path %>/assets/australia-reprojected.tif",
+
     "basemap": {
 
         "src" : "<%= path %>/assets/basemap-3857.jpg",
@@ -9,6 +11,10 @@
         "height" : 3283
 
     },
+
+    "before" : "<%= path %>/assets/before.jpg",
+
+    "after" : "<%= path %>/assets/after.jpg",
 
     "bbox" : [{
         "type": "Feature",
@@ -27,6 +33,12 @@
         "geometry": {
             "type": "Polygon",
             "coordinates": [[[140.310860,-26.982970],[154.197578,-26.982970],[154.197578,-38.101874],[140.310860,-38.101874],[140.310860,-26.982970]]]
+        }
+    },{
+        "type": "Feature",
+        "geometry": {
+            "type": "Polygon",
+            "coordinates": [[[149.626429,-28.914100],[149.879115,-28.914100],[149.879115,-29.130252],[149.626429,-29.130252],[149.626429,-28.914100]]]
         }
     }],
 

@@ -40,6 +40,8 @@ export default class Canvasizer {
 
 		this.height = this.tiffHeight
 
+		console.log(`Canvas width: ${this.width}, Canvas height: ${this.height}`)
+
         this.projection.fitSize([self.width, self.height], self.bbox);
 
 	    var values = (await image.readRasters())[0]
