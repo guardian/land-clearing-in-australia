@@ -42,6 +42,8 @@
         }
     }],
 
+    "annotations" : [{ "lat" : -33.878540, "lng" : 151.201710 , "length" : 50, "arrowsize" : 15, "opacity" : 0.8, "note" : "This is the Sydney"}],
+
     "social": [{
 
         "title" : "Land clearing",

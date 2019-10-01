@@ -13,3 +13,16 @@
 .interactive-atom {
     margin: 0 !important;
 }
+
+#infobox {
+	width: 100px;
+	height: 70px;
+	z-index: 999;
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	text-align: right;
+	font-family: "Guardian Text Sans Web";
+	font-size: 20px;
+	color: black;
+}

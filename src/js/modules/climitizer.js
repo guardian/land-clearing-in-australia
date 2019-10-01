@@ -52,6 +52,10 @@ export class Climitizer {
 
         this.timer = 0
 
+        this.placenames = places.features.filter(function(d){ 
+            return (self.mobile) ? d.properties.scalerank < 2 : d.properties.scalerank < 3 ;        
+        });
+
         this.shadow = d3.geoMercator()
                 .scale(1)
                 .translate([0,0])
@@ -239,6 +243,8 @@ export class Climitizer {
 
         }
 
+        self.labelizer()
+
         return { "nw" : nw, "se" : se }
 
     }
@@ -256,6 +262,10 @@ export class Climitizer {
             self.context.fill();
             self.context.stroke();
         });
+
+        self.labelizer()
+
+        self.annotizer(self.settings.annotations[0])
 
 
     }
@@ -303,6 +313,10 @@ export class Climitizer {
                 self.context.fill();
             }
         }
+
+        var year = self.x + 2001
+
+        d3.select("#infobox").html(year)
 
         self.x = (self.x < self.y - 1) ? self.x + 1 : 0 ;
 
@@ -359,6 +373,82 @@ export class Climitizer {
 
     }
 
+    labelizer() {
+
+        var self = this
+
+        this.placenames.forEach(function(d,i) {
+            self.context.beginPath();
+            self.context.save();
+            self.context.fillStyle="#000000";
+            self.context.shadowColor="white";
+            self.context.shadowBlur=5;
+            self.context.font = "15px 'Guardian Text Sans Web' Arial";
+            self.context.fillText(d.properties.name,self.projection([d.properties.longitude,d.properties.latitude])[0],self.projection([d.properties.longitude,d.properties.latitude])[1]);
+            self.context.closePath();
+            self.context.restore();
+
+        })
+
+    }
+
+    annotizer(data) {
+
+        var self = this
+        var sx = self.projection([data.lng, data.lat])[0]
+        var sy = self.projection([data.lng, data.lat])[1]
+        var cpx = sx
+        var cpy = sy + data.length / 2
+        var toX = sx + data.length
+        var toY = sy + data.length
+        
+        self.context.beginPath();
+        self.context.fillStyle = "rgba(55, 217, 56,"+ data.opacity +")";
+        self.context.moveTo(sx,sy);
+        self.context.quadraticCurveTo(cpx, cpy, toX, toY);
+        self.context.stroke();
+        self.context.closePath();
+        self.drawArrowhead(sx,sy,350,data.arrowsize,data.arrowsize)
+
+        self.context.beginPath();
+        self.context.save();
+        self.context.fillStyle="#000000";
+        self.context.shadowColor="white";
+        self.context.shadowBlur=5;
+        self.context.font = "15px 'Guardian Text Sans Web' Arial";
+        self.context.fillText(data.note,toX + 10, toY + 10);
+        self.context.closePath();
+        self.context.restore();
+
+    }
+
+    drawArrowhead(locx, locy, angle, sizex, sizey) {
+
+        var self = this
+        var hx = sizex / 2;
+        var hy = sizey / 2;
+
+        self.context.translate((locx ), (locy));
+        self.context.rotate(angle);
+        self.context.translate(-hx,-hy);
+
+        self.context.beginPath();
+        self.context.fillStyle="#000000";
+        self.context.moveTo(0,0);
+        self.context.lineTo(0,1*sizey);    
+        self.context.lineTo(1*sizex,1*hy);
+        self.context.closePath();
+        self.context.fill();
+
+        self.context.translate(hx,hy);
+        self.context.rotate(-angle);
+        self.context.translate(-locx,-locy);
+    }        
+
+    findAngle(sx, sy, ex, ey) {
+        return Math.atan2((ey - sy), (ex - sx));
+    }
+
     scroll() {
 
         var self = this
@@ -380,12 +470,13 @@ export class Climitizer {
 
             self.drawMap().then( (bbox) => {
 
-
             })
 
         }});
 
         scrolly.addTrigger({num: 2, do: () => {
+
+            d3.select("#infobox").html("")
 
             if (self.tickerInterval!=null) {
 
@@ -423,6 +514,8 @@ export class Climitizer {
 
         scrolly.addTrigger({num: 4, do: () => {
 
+            d3.select("#infobox").html("")
+
             if (self.tickerInterval!=null) {
 
                 clearInterval(self.tickerInterval);
@@ -458,7 +551,6 @@ export class Climitizer {
 
             self.relocate(relocate.translate, relocate.scale)
 
-
         }});
 
         scrolly.addTrigger({num: 7, do: () => {
@@ -478,7 +570,6 @@ export class Climitizer {
             var relocate = self.geo(3)
 
             self.relocate(relocate.translate, relocate.scale)
-
 
         }});
 
