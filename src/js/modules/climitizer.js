@@ -52,6 +52,8 @@ export class Climitizer {
 
         this.timer = 0
 
+        this.current = 0
+
         this.placenames = places.features.filter(function(d){ 
             return (self.mobile) ? d.properties.scalerank < 2 : d.properties.scalerank < 3 ;        
         });
@@ -453,16 +455,16 @@ export class Climitizer {
 
         var self = this
 
-        const scrolly = new ScrollyTeller({
+        this.scrolly = new ScrollyTeller({
             parent: document.querySelector("#scrolly-1"),
             triggerTop: 1/3, // percentage from the top of the screen that the trigger should fire
             triggerTopMobile: 0.75,
             transparentUntilActive: true
         });
 
-        scrolly.addTrigger({num: 1, do: () => {
+        this.scrolly.addTrigger({num: 1, do: () => {
 
-            console.log("Trigger...1")
+            self.current = 1
 
             var relocate = self.geo(0)
 
@@ -474,7 +476,9 @@ export class Climitizer {
 
         }});
 
-        scrolly.addTrigger({num: 2, do: () => {
+        this.scrolly.addTrigger({num: 2, do: () => {
+
+            self.current = 2
 
             d3.select("#infobox").html("")
 
@@ -492,7 +496,11 @@ export class Climitizer {
 
         }});
 
-        scrolly.addTrigger({num: 3, do: () => {
+        this.scrolly.addTrigger({num: 3, do: () => {
+
+            self.current = 3
+
+            self.x = 0
 
             if (self.tickerInterval === null) {
 
@@ -512,7 +520,9 @@ export class Climitizer {
             
         }});
 
-        scrolly.addTrigger({num: 4, do: () => {
+        this.scrolly.addTrigger({num: 4, do: () => {
+
+            self.current = 4
 
             d3.select("#infobox").html("")
 
@@ -535,7 +545,9 @@ export class Climitizer {
 
         }});
 
-        scrolly.addTrigger({num: 5, do: () => {
+        this.scrolly.addTrigger({num: 5, do: () => {
+
+            self.current = 5
 
             self.active = false
 
@@ -543,7 +555,9 @@ export class Climitizer {
             
         }});
 
-        scrolly.addTrigger({num: 6, do: () => {
+        this.scrolly.addTrigger({num: 6, do: () => {
+
+            self.current = 6
 
             self.active = false
 
@@ -553,30 +567,9 @@ export class Climitizer {
 
         }});
 
-        scrolly.addTrigger({num: 7, do: () => {
+        this.scrolly.addTrigger({num: 7, do: () => {
 
-            console.log("7")
-
-            if (self.timelineInterval!=null) {
-
-                clearInterval(self.timelineInterval);
-
-                self.timelineInterval = null
-
-            }
-
-            self.active = true
-
-            var relocate = self.geo(3)
-
-            self.relocate(relocate.translate, relocate.scale)
-
-        }});
-
-
-        scrolly.addTrigger({num: 8, do: () => {
-
-            console.log("8")
+            self.current = 7
 
             if (self.timelineInterval!=null) {
 
@@ -595,7 +588,30 @@ export class Climitizer {
         }});
 
 
-        scrolly.addTrigger({num: 9, do: () => {
+        this.scrolly.addTrigger({num: 8, do: () => {
+
+            self.current = 8
+
+            if (self.timelineInterval!=null) {
+
+                clearInterval(self.timelineInterval);
+
+                self.timelineInterval = null
+
+            }
+
+            self.active = true
+
+            var relocate = self.geo(3)
+
+            self.relocate(relocate.translate, relocate.scale)
+
+        }});
+
+
+        this.scrolly.addTrigger({num: 9, do: () => {
+
+            self.current = 9
 
             console.log("9")
 
@@ -609,9 +625,9 @@ export class Climitizer {
 
         }});
 
-        scrolly.addTrigger({num: 10, do: () => {
+        this.scrolly.addTrigger({num: 10, do: () => {
 
-            console.log("10")
+            self.current = 10
 
             if (self.timelineInterval!=null) {
 
@@ -623,7 +639,33 @@ export class Climitizer {
 
         }});
 
-        scrolly.watchScroll();
+        this.scrolly.watchScroll();
+
+        this.resize()
+
+    }
+
+    resize() {
+
+        var self = this
+
+        window.addEventListener("resize", function() {
+
+            clearTimeout(document.body.data)
+
+            document.body.data = setTimeout( function() { 
+
+                console.log("Resize the map")
+
+                self.width = getDimensions(self.viz)[0]
+
+                self.height = window.innerHeight;
+
+                self.scrolly.doScrollAction(self.current)
+
+            }, 200);
+
+        });
 
     }
 
