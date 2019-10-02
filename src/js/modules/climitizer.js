@@ -320,7 +320,6 @@ export class Climitizer {
 
         var self = this
 
-
         d3.select("#land-cleared")
             .transition()
             .duration(2000)
@@ -519,6 +518,7 @@ export class Climitizer {
             self.current = 6
 
             d3.select("#land-cleared").style("opacity","0")
+
             d3.select("#land-clearing-mask").style("opacity","0")
 
             if (self.timelineInterval!=null) {
@@ -561,11 +561,8 @@ export class Climitizer {
                   .style("opacity", "0.5");
 
             })
-        
-
 
         }});
-
 
         this.scrolly.addTrigger({num: 8, do: () => {
 
@@ -581,7 +578,6 @@ export class Climitizer {
 
 
         }});
-
 
         this.scrolly.addTrigger({num: 9, do: () => {
 
