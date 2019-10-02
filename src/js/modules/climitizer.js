@@ -168,10 +168,7 @@ export class Climitizer {
 
             self.projection.scale(z.k)
 
-            self.drawMap().then( (bbox) => {
-
-
-            })
+            self.drawMap()
 
         }
 
@@ -202,7 +199,7 @@ export class Climitizer {
 
     }
 
-    async drawMap() {
+    drawMap() {
 
         var self = this
 
@@ -247,8 +244,6 @@ export class Climitizer {
 
         self.labelizer()
 
-        return { "nw" : nw, "se" : se }
-
     }
 
     drawLGAS() {
@@ -290,10 +285,7 @@ export class Climitizer {
 
         if (self.x===0) {
 
-            self.drawMap().then( (bbox) => {
-
-
-            })
+            self.drawMap()
 
         }
 
@@ -464,21 +456,19 @@ export class Climitizer {
 
         this.scrolly.addTrigger({num: 1, do: () => {
 
-            self.current = 1
+            self.current = 0
 
             var relocate = self.geo(0)
 
             self.relocate(relocate.translate, relocate.scale)
 
-            self.drawMap().then( (bbox) => {
-
-            })
+            self.drawMap()
 
         }});
 
         this.scrolly.addTrigger({num: 2, do: () => {
 
-            self.current = 2
+            self.current = 1
 
             d3.select("#infobox").html("")
 
@@ -498,7 +488,7 @@ export class Climitizer {
 
         this.scrolly.addTrigger({num: 3, do: () => {
 
-            self.current = 3
+            self.current = 2
 
             self.x = 0
 
@@ -512,17 +502,14 @@ export class Climitizer {
 
             self.relocate(relocate.translate, relocate.scale)
 
-            self.drawMap().then( (bbox) => {
-
-
-            })
+            self.drawMap()
 
             
         }});
 
         this.scrolly.addTrigger({num: 4, do: () => {
 
-            self.current = 4
+            self.current = 3
 
             d3.select("#infobox").html("")
 
@@ -538,16 +525,13 @@ export class Climitizer {
 
             self.relocate(relocate.translate, relocate.scale)
 
-            self.drawMap().then( (bbox) => {
-
-
-            })
+            self.drawMap()
 
         }});
 
         this.scrolly.addTrigger({num: 5, do: () => {
 
-            self.current = 5
+            self.current = 4
 
             self.active = false
 
@@ -557,7 +541,7 @@ export class Climitizer {
 
         this.scrolly.addTrigger({num: 6, do: () => {
 
-            self.current = 6
+            self.current = 5
 
             self.active = false
 
@@ -569,7 +553,7 @@ export class Climitizer {
 
         this.scrolly.addTrigger({num: 7, do: () => {
 
-            self.current = 7
+            self.current = 6
 
             if (self.timelineInterval!=null) {
 
@@ -590,7 +574,7 @@ export class Climitizer {
 
         this.scrolly.addTrigger({num: 8, do: () => {
 
-            self.current = 8
+            self.current = 7
 
             if (self.timelineInterval!=null) {
 
@@ -611,7 +595,7 @@ export class Climitizer {
 
         this.scrolly.addTrigger({num: 9, do: () => {
 
-            self.current = 9
+            self.current = 8
 
             console.log("9")
 
@@ -627,7 +611,7 @@ export class Climitizer {
 
         this.scrolly.addTrigger({num: 10, do: () => {
 
-            self.current = 10
+            self.current = 9
 
             if (self.timelineInterval!=null) {
 
@@ -641,11 +625,11 @@ export class Climitizer {
 
         this.scrolly.watchScroll();
 
-        this.resize()
+        this.resizer()
 
     }
 
-    resize() {
+    resizer() {
 
         var self = this
 
@@ -655,17 +639,35 @@ export class Climitizer {
 
             document.body.data = setTimeout( function() { 
 
-                console.log("Resize the map")
-
-                self.width = getDimensions(self.viz)[0]
-
-                self.height = window.innerHeight;
-
-                self.scrolly.doScrollAction(self.current)
+                self.resize()
 
             }, 200);
 
         });
+
+    }
+
+    resize() {
+
+        console.log("Resize the map")
+
+        var self = this
+
+        self.width = getDimensions(self.viz)[0]
+
+        self.height = window.innerHeight;
+
+        self.canvas = d3.select("#map-animation-csg")  
+                        .attr("width", self.width)
+                        .attr("height", self.height);                   
+
+        self.context = self.canvas.node().getContext("2d");                   
+
+        self.path = d3.geoPath()
+            .projection(self.projection)
+            .context(self.context);
+
+        self.scrolly.doScrollAction(self.current)
 
     }
 
