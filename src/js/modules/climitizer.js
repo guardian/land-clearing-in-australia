@@ -566,6 +566,10 @@ export class Climitizer {
 
         this.scrolly.addTrigger({num: 8, do: () => {
 
+            console.log("Number 8")
+
+            d3.select("#land-clearing").style("opacity","1")
+
             self.current = 7
 
             self.active = true
@@ -581,6 +585,12 @@ export class Climitizer {
 
         this.scrolly.addTrigger({num: 9, do: () => {
 
+            d3.select("#land-clearing").style("opacity","0")
+
+            var relocate = self.geo(0)
+
+            self.relocate(relocate.translate, relocate.scale)
+
             console.log("9")
 
             self.current = 8
@@ -594,6 +604,8 @@ export class Climitizer {
             self.current = 9
 
         }});
+
+        this.scrolly.doScrollAction(self.current)
 
         this.scrolly.watchScroll();
 
