@@ -4,7 +4,7 @@
 	position: absolute;
 	right: 20px;
 	top: 20px;
-	text-align: right;
+	text-align: left;
 	font-size: 22px;
 	font-family: "Guardian Text Sans Web", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 }
@@ -321,6 +321,7 @@ h3 {
 	.img-credit-header {
 		transform: translateY(18px);
 		color: #bdbdbd;
+		z-index: 999999999;
 	}
 }
 .header-wrapper {
@@ -425,10 +426,8 @@ h3 {
 	z-index: 100;
 	box-sizing: border-box;
 }
-.line-charts {
+.full-width-image {
 	margin: 0;
-	border-top: 1px solid #dcdcdc;
-	border-bottom: 1px solid #dcdcdc;
 	padding-top: 4px;
 	margin-top: 36px;
 	margin-bottom: 24px;
@@ -436,12 +435,18 @@ h3 {
 	z-index: 2;
 	background-color: #fff;
 }
+
+.full-width-image img, .inline-image img {
+	width: 100%;
+	height: auto;
+}
+
 @media (min-width: 71.25em) and (max-width: 81.24em) {
-	.line-charts {
+	.full-width-image {
 		padding-left: 160px;
 	}
 }
-.line-charts p {
+.full-width-image p {
 	margin: 0;
 	width: 100%;
 	margin-bottom: 36px;
@@ -450,7 +455,7 @@ h3 {
 	line-height: 20px;
 	font-family: "Guardian Text Egyptian Web", Georgia, serif;
 }
-.line-charts h3 {
+.full-width-image h3 {
 	min-height: 48px;
 }
 .img-src {
@@ -463,118 +468,7 @@ h3 {
 .img-src:before {
 	content: 'Photo source: ';
 }
-.line-wrapper {
-	display: inline-block;
-	margin-right: 46px;
-	vertical-align: top;
-	width: 100%;
-	width: calc(100% - 20px);
-	margin-left: 10px;
-	margin-right: 10px;
-	position: relative;
-}
-.line-wrapper p {
-	padding: 0;
-	margin-bottom: 12px;
-}
-.line-wrapper .source {
-	padding: 0;
-	font-size: 13px;
-	line-height: 18px;
-	font-family: "Guardian Text Sans Web", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-	margin-bottom: 24px;
-	color: #bdbdbd;
-}
-.line-wrapper .source:before {
-	content: "Source: ";
-}
-@media (min-width: 46.25em) {
-	.line-wrapper {
-		width: 400px;
-	}
-}
-@media (min-width: 46.25em) and (max-width: 81.24em) {
-	.line-wrapper:nth-of-type(2n) {
-		margin-right: 0;
-	}
-}
-@media (min-width: 81.25em) {
-	.line-wrapper:nth-of-type(3n) {
-		margin-right: 0;
-	}
-}
-.big-number {
-	font-size: 14px;
-	line-height: 20px;
-	font-family: "Guardian Text Sans Web", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-	margin-bottom: 24px;
-	margin-top: -6px;
-}
-.big-number span {
-	font-size: 40px;
-	line-height: 44px;
-	font-family: "Guardian Titlepiece", "Guardian Headline Full", "Guardian Headline", "Guardian Egyptian Web", Georgia, serif;
-	font-weight: bold;
-	font-variant-numeric: lining-nums;
-	-moz-font-feature-settings: "lnum";
-	-webkit-font-feature-settings: "lnum";
-	font-feature-settings: "lnum";
-	font-size: 28px;
-	color: #ff4e36;
-	display: inline-block;
-	margin-right: 3px;
-}
-.line-wrapper svg {
-	display: block;
-	margin-bottom: 36px;
-	overflow: visible!important;
-}
-.line-wrapper svg text {
-	font-size: 12px;
-	line-height: 16px;
-	font-family: "Guardian Text Sans Web", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-}
-.line-wrapper svg circle {
-	fill: #fff;
-	stroke: #ff4e36;
-	stroke-width: 1.5;
-}
-.line-wrapper svg circle.circle-hashed {
-	stroke: #dcdcdc;
-}
-.area {
-	stroke: none;
-	fill: url(https://www.theguardian.com/world/ng-interactive/2019/mar/29/a-year-of-bloodshed-at-gaza-border-protests#myGradient);
-	fill: none;
-}
-.area-hashed {
-	stroke: none;
-	fill: url(https://www.theguardian.com/world/ng-interactive/2019/mar/29/a-year-of-bloodshed-at-gaza-border-protests#myGradient2);
-	fill: none;
-}
-.line {
-	stroke: #ff4e36;
-	fill: none;
-	stroke-width: 1.5;
-}
-.line-hashed {
-	stroke: #dcdcdc;
-	fill: none;
-	stroke-width: 2;
-}
-.y.axis path {
-	display: none;
-}
-.y.axis line {
-	stroke: #dcdcdc;
-	stroke-dasharray: 1, 1;
-}
-.x.axis line {
-	stroke: #dcdcdc;
-}
-.x.axis .domain {
-	stroke: #dcdcdc;
-}
+
 .od-share__button {
 	height: 30px;
 	width: 30px;
@@ -608,3 +502,129 @@ h3 {
 	padding-top: 6px;
 	margin-top: 6px;
 }
+
+.inline-image {
+	padding-left: 10px;
+	padding-right: 10px;
+	max-width: 620px;
+	margin-bottom: 30px;
+	margin-top: 30px;
+}
+
+@media (min-width: 71.25em) {
+	.inline-image {
+		padding: 0;
+		width: 620px;
+		margin-left: 170px;
+	}
+}
+@media (min-width: 81.25em) {
+	.inline-image {
+		padding: 0;
+		width: 620px;
+		margin-left: 250px;
+	}
+}
+
+.full-width-image-credit {
+	color: #bdbdbd;
+	z-index: 999999999;
+	font-size: 12px;
+	line-height: 16px;
+	font-family: "Guardian Text Sans Web", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+	width: 100%;
+	margin-top: -20px;
+	text-align: left;
+}
+
+.inline-image-credit {
+	padding-left: 20px;
+	padding-right: 10px;
+	max-width: 620px;
+	color: #bdbdbd;
+	z-index: 999999999;
+	font-size: 12px;
+	line-height: 16px;
+	font-family: "Guardian Text Sans Web", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+	width: 100%;
+	margin-top: -25px;
+	text-align: left;
+	margin-bottom: 20px;
+}
+
+@media (min-width: 71.25em) {
+	.inline-image-credit {
+		padding: 0;
+		padding-left: 0px;
+		width: 620px;
+		margin-left: 170px;
+	}
+}
+@media (min-width: 81.25em) {
+	.inline-image-credit {
+		padding: 0;
+		padding-left: 0px;
+		width: 620px;
+		margin-left: 250px;
+	}
+}
+
+
+.medium-image {
+	padding-left: 10px;
+	padding-right: 10px;
+	max-width: 820px;
+	margin-bottom: 30px;
+	margin-top: 30px;
+}
+
+@media (min-width: 71.25em) {
+	.medium-image {
+		padding: 0;
+		width: 100%;
+		margin-left: 170px;
+	}
+}
+@media (min-width: 81.25em) {
+	.medium-image {
+		padding: 0;
+		width: 100%;
+		margin-left: 250px;
+	}
+}
+
+.medium-image img {
+	width: 100%;
+	height: auto;
+}
+
+.medium-image-credit {
+	max-width: 730px;
+	color: #bdbdbd;
+	z-index: 999999999;
+	font-size: 12px;
+	line-height: 16px;
+	font-family: "Guardian Text Sans Web", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+	width: 100%;
+	margin-top: -25px;
+	text-align: left;
+	margin-bottom: 20px;
+	margin-left: 10px;
+}
+
+@media (min-width: 71.25em) {
+	.medium-image-credit {
+		padding: 0;
+		max-width: 820px;
+		margin-left: 170px;
+	}
+}
+@media (min-width: 81.25em) {
+	.medium-image-credit {
+		padding: 0;
+		max-width: 820px;
+		margin-left: 250px;
+	}
+}
+
+    
