@@ -24,7 +24,11 @@ export default class Canvasizer {
 
 		var self = this
 
-		var tiff = await GeoTIFF.fromUrl(self.path);
+		//var tiff = await GeoTIFF.fromFile(self.path);
+
+		var tiff = await fetch(self.path)
+		  .then(response => response.arrayBuffer())
+		  .then(buffer => GeoTIFF.fromArrayBuffer(buffer))
 
 		var image = await tiff.getImage();
 
