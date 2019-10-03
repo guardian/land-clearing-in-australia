@@ -32,6 +32,8 @@ export class Climitizer {
 
         this.viz = document.querySelector("#data-viz");
 
+        this.satellite = document.querySelector("#land-clearing");
+
         this.width = getDimensions(self.viz)[0]
 
         this.height = window.innerHeight;
@@ -505,6 +507,14 @@ export class Climitizer {
 
             d3.select("#land-clearing").style("opacity","0").style('filter', 'grayscale(100%)');
 
+            if (self.satellite.classList.contains('show-clearing-map')) {
+
+                self.satellite.classList.remove('show-clearing-map');
+
+                self.satellite.classList.add('hide-clearing-map');
+
+            }
+
             self.active = false
 
             var relocate = self.geo(2)
@@ -516,6 +526,15 @@ export class Climitizer {
         this.scrolly.addTrigger({num: 7, do: () => {
 
             self.current = 6
+
+            if (self.satellite.classList.contains('hide-clearing-map')) {
+
+                self.satellite.classList.remove('hide-clearing-map');
+
+                self.satellite.classList.add('show-clearing-map');
+
+            }
+
 
             d3.select("#land-cleared").style("opacity","0")
 
@@ -568,6 +587,14 @@ export class Climitizer {
 
             console.log("Number 8")
 
+            if (self.satellite.classList.contains('hide-clearing-map')) {
+
+                self.satellite.classList.remove('hide-clearing-map');
+
+                self.satellite.classList.add('show-clearing-map');
+
+            }
+
             d3.select("#land-clearing").style("opacity","1")
 
             self.current = 7
@@ -585,7 +612,13 @@ export class Climitizer {
 
         this.scrolly.addTrigger({num: 9, do: () => {
 
-            d3.select("#land-clearing").style("opacity","0")
+            if (self.satellite.classList.contains('show-clearing-map')) {
+
+                self.satellite.classList.remove('show-clearing-map');
+
+                self.satellite.classList.add('hide-clearing-map');
+
+            }
 
             var relocate = self.geo(0)
 
