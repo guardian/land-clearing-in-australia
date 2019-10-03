@@ -82,7 +82,9 @@ figure {
 figure img {
 	display: block;
 }
-/*! CSS Used from: https://assets.guim.co.uk/stylesheets/34c092721cd48ba90dfa205824941d3c/print.css ; media=print */
+figure.element {
+	margin: 0px;
+}
 
 @media print {
 	figure {
@@ -325,13 +327,13 @@ h3 {
 	height: 100vh;
 	position: relative;
 	width: 100%;
-	background-image: url(https://media.guim.co.uk/9d1734a0bd892cdb2634df9a9a0d0472f2648478/0_0_5520_3600/2000.jpg);
+	background-image: url('<%= path %>/assets/2000/header.jpg');
 	background-size: cover;
 	background-position: center;
 }
 @media (max-width: 20em) {
 	.header-wrapper {
-		background-image: url(https://media.guim.co.uk/9d1734a0bd892cdb2634df9a9a0d0472f2648478/0_7_5520_3312/1000.jpg);
+		background-image: url('<%= path %>/assets/1300/header.jpg');
 	}
 }
 .scroll-wrapper {
