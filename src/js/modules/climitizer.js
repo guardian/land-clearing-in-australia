@@ -3,6 +3,7 @@ import Canvasizer from "../modules/canvasizer"
 import { $, $$, wait, getDimensions } from "../modules/util"
 import * as d3 from 'd3'
 import * as topojson from "topojson"
+import { Lightbox } from '../modules/lightbox'
 
 export class Climitizer {
 
@@ -74,7 +75,9 @@ export class Climitizer {
 
         this.components = {
 
-            canvasizer: new Canvasizer(self.settings.geotiff, self.settings.bbox[1])
+            canvasizer: new Canvasizer(self.settings.geotiff, self.settings.bbox[1]),
+
+            lightbox: new Lightbox()
 
         };
 
@@ -405,6 +408,14 @@ export class Climitizer {
         return Math.atan2((ey - sy), (ex - sx));
     }
 
+    wayfinder(index) {
+
+        this.current = index
+
+        console.log(`Current position ${index + 1}`)
+
+    }
+
     scroll() {
 
         var self = this
@@ -418,7 +429,7 @@ export class Climitizer {
 
         this.scrolly.addTrigger({num: 1, do: () => {
 
-            self.current = 0
+            this.wayfinder(this.scrolly.lastI)
 
             var relocate = self.geo(0)
 
@@ -430,7 +441,7 @@ export class Climitizer {
 
         this.scrolly.addTrigger({num: 2, do: () => {
 
-            self.current = 1
+            this.wayfinder(this.scrolly.lastI)
 
             d3.select("#infobox").html("")
 
@@ -450,7 +461,7 @@ export class Climitizer {
 
         this.scrolly.addTrigger({num: 3, do: () => {
 
-            self.current = 2
+            this.wayfinder(this.scrolly.lastI)
 
             self.x = 0
 
@@ -471,7 +482,7 @@ export class Climitizer {
 
         this.scrolly.addTrigger({num: 4, do: () => {
 
-            self.current = 3
+            this.wayfinder(this.scrolly.lastI)
 
             d3.select("#infobox").html("")
 
@@ -493,7 +504,7 @@ export class Climitizer {
 
         this.scrolly.addTrigger({num: 5, do: () => {
 
-            self.current = 4
+            this.wayfinder(this.scrolly.lastI)
 
             self.active = false
 
@@ -503,7 +514,7 @@ export class Climitizer {
 
         this.scrolly.addTrigger({num: 6, do: () => {
 
-            self.current = 5
+            this.wayfinder(this.scrolly.lastI)
 
             d3.select("#land-clearing").style("opacity","0").style('filter', 'grayscale(100%)');
 
@@ -525,7 +536,7 @@ export class Climitizer {
 
         this.scrolly.addTrigger({num: 7, do: () => {
 
-            self.current = 6
+            this.wayfinder(this.scrolly.lastI)
 
             if (self.satellite.classList.contains('hide-clearing-map')) {
 
@@ -556,28 +567,41 @@ export class Climitizer {
 
             wait(250).then( () => {
 
+                if (self.current === 6) {
+
                 d3.select("#land-clearing")
                   .transition()
                   .duration(550)
                   .style("opacity", "1")
 
+
+                }
+
             })
 
             wait(800).then( () => {
 
-                d3.select("#land-clearing")
-                  .transition()
-                  .duration(1000)
-                  .style('filter', 'grayscale(0%)');
+                if (self.current === 6) {
+
+                    d3.select("#land-clearing")
+                      .transition()
+                      .duration(1000)
+                      .style('filter', 'grayscale(0%)');
+
+                }
 
             })
 
             wait(1000).then( () => {
 
-                d3.select("#land-clearing-mask")
-                  .transition()
-                  .duration(1000)
-                  .style("opacity", "0.5");
+                if (self.current === 6) {
+
+                    d3.select("#land-clearing-mask")
+                      .transition()
+                      .duration(1000)
+                      .style("opacity", "0.5");
+
+                }
 
             })
 
@@ -585,7 +609,7 @@ export class Climitizer {
 
         this.scrolly.addTrigger({num: 8, do: () => {
 
-            console.log("Number 8")
+            this.wayfinder(this.scrolly.lastI)
 
             if (self.satellite.classList.contains('hide-clearing-map')) {
 
@@ -596,8 +620,6 @@ export class Climitizer {
             }
 
             d3.select("#land-clearing").style("opacity","1")
-
-            self.current = 7
 
             self.active = true
 
@@ -612,6 +634,8 @@ export class Climitizer {
 
         this.scrolly.addTrigger({num: 9, do: () => {
 
+            this.wayfinder(this.scrolly.lastI)
+
             if (self.satellite.classList.contains('show-clearing-map')) {
 
                 self.satellite.classList.remove('show-clearing-map');
@@ -624,17 +648,6 @@ export class Climitizer {
 
             self.relocate(relocate.translate, relocate.scale)
 
-            console.log("9")
-
-            self.current = 8
-
-        }});
-
-        this.scrolly.addTrigger({num: 10, do: () => {
-
-            console.log("10")
-
-            self.current = 9
 
         }});
 

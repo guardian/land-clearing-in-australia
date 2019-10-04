@@ -55,6 +55,7 @@
 
 .hide-clearing-map {
 	position: relative; 
+	height: 0px;
 	display: none;
 }
 
@@ -146,4 +147,51 @@
 .interactive-wrapper--main {
 	background-color: white;
 	z-index: 100000999;
+}
+
+.video-header-wrapper {
+	height: 100vh;
+	position: relative;
+	width: 100%;
+}
+
+.video-header-wrapper video {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  min-width: 100%; 
+  min-height: 100%;
+}
+
+.header-wrapper {
+	height: 100vh;
+	position: relative;
+	width: 100%;
+	background-size: cover;
+	background-position: center;
+
+	@include mq($until: mobile) {
+		background-image: url('<%= path %>/assets/1300/header.jpg');
+	}
+
+	@include mq($from: mobile, $until: mobileLandscape) {
+		background-image: url('<%= path %>/assets/1300/header.jpg');
+	}
+
+	@include mq($from: mobileLandscape, $until: tablet) {
+		background-image: url('<%= path %>/assets/1300/header.jpg');
+	}
+
+	@include mq($from: tablet, $until: desktop) {
+		background-image: url('<%= path %>/assets/1300/header.jpg');
+	}
+
+	@include mq($from: desktop, $until: wide) {
+		background-image: url('<%= path %>/assets/1300/header.jpg');
+	}
+
+	@include mq($from: wide) {
+		background-image: url('<%= path %>/assets/2000/header.jpg');
+	}
+
 }

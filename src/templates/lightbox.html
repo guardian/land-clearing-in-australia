@@ -1,0 +1,15 @@
+{{#if showLightbox}}
+<div class="lightbox" id="lightbox">
+	<div class="lightbox__viewer"><img id="lightbox__target" src="{{image}}"></div>
+	<div class="lightbox__caption--{{#if showInfo}}visible{{else}}hidden{{/if}}" id="lightbox__caption">{{caption}}</div>
+	<div class="lightbox__sidebar">
+		<div on-click="['close']"  class="lightbox__btn close"></div>
+		<div class="lightbox__progress">
+			<span>{{currentLabel}}</span> <span>/</span> <span>{{total}}</span>
+		</div>
+		<div on-click="['next', current]" class="lightbox__btn next" id="next"></div>
+		<div on-click="['back', current]" class="lightbox__btn back" id="back"></div>
+		<div on-click="['info']" class="lightbox__btn info" id="info"></div>
+	</div>
+</div>
+{{/if}}

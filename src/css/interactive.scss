@@ -1,3 +1,5 @@
+
+
 #infobox {
 	width: 200px;
 	z-index: 9999999;
@@ -324,19 +326,7 @@ h3 {
 		z-index: 999999999;
 	}
 }
-.header-wrapper {
-	height: 100vh;
-	position: relative;
-	width: 100%;
-	background-image: url('<%= path %>/assets/2000/header.jpg');
-	background-size: cover;
-	background-position: center;
-}
-@media (max-width: 20em) {
-	.header-wrapper {
-		background-image: url('<%= path %>/assets/1300/header.jpg');
-	}
-}
+
 .scroll-wrapper {
 	height: 400vh;
 	border-top: 1px solid #dcdcdc;
@@ -622,5 +612,7 @@ h3 {
 		margin-left: 250px;
 	}
 }
+
+
 
     
