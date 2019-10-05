@@ -1,11 +1,14 @@
- const fs = require('fs')
-//const geotiff = require('geotiff')
-//const plotty = require('./libraries/plotty.min.js')
+const fs = require('fs')
 const gdal = require("gdal");
-//const unzipper = require("unzipper")
-//const turf = require("@turf/turf")
-//const { convert } = require('geojson2shp')
 
+
+/*
+Use this script to get info about a geotiff
+
+Run from the command line
+
+node get-info-about-geotiff name-of-tiff
+*/
 
 
 var app = {

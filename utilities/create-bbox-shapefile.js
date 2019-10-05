@@ -6,6 +6,27 @@ var turf = require("@turf/turf")
 var { convert } = require('geojson2shp')
 var unzipper = require("unzipper")
 
+/*
+Use this script if you need to creat a bounding box
+shapefile. You may need to a bounding box if you want 
+to crop geotiffs to specific coordinates
+
+If you want to create a bbox to match an existing geotiff...
+
+Run from the command line
+
+node create-bbox-shapefile name-of-tiff
+
+If you want to create a bbox from specific coordinates you will need the
+North west latitude, north west longitude, south east latitude, south east longitude
+then update line 53... then
+
+Run from the command line
+
+node create-bbox-shapefile
+
+*/
+
 var app = {
 
 	precheck: function(filepath) {
@@ -32,11 +53,7 @@ var app = {
 
 		} else {
 
-			console.log("General")
-
 			app.bbox([104.671555,-7.237148,160.569992,-46.833892])
-
-			//[[[104.671555,-7.237148],[160.569992,-7.237148],[160.569992,-46.833892],[104.671555,-46.833892],[104.671555,-7.237148]]]
 			
 		}
 
@@ -52,8 +69,6 @@ var app = {
 
 		var gk = image.getGeoKeys()
 
-		console.log(gk)
-
 		var extent = extents({
 		  tiePoint: fd.ModelTiepoint,
 		  pixelScale: fd.ModelPixelScale,
@@ -61,19 +76,10 @@ var app = {
 		  height: fd.ImageLength,
 		  proj: require('proj4'),
 		  from: epsg[gk.ProjectedCSTypeGeoKey || gk.GeographicTypeGeoKey],
-		  to: epsg[4326]
+		  to: epsg[3857]
 		})
 
-		//app.bbox([ extent.upperLeft[0], extent.upperLeft[1], extent.lowerRight[0], extent.lowerRight[1] ])
-
-		/*
-		Queensland: 136.511993,-29.841984,156.990509,-9.493932
-		NSW: 139.916725,-38.927499,155.385475,-27.257224
-		*/
-
-		//app.bbox([136.511993,-29.841984,156.990509,-9.493932])
-
-		app.bbox([142.713261,-35.973839,156.160526,-21.999400])
+		app.bbox([ extent.upperLeft[0], extent.upperLeft[1], extent.lowerRight[0], extent.lowerRight[1] ])
 
 	},
 
@@ -91,14 +97,11 @@ var app = {
 
           layer: 'bbox',
 
-          targetCrs: 4326
+          targetCrs: 3857
 
         }
 
-        const featureCollection = { type: 'FeatureCollection', crs: { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::4326" } }, features: [ bboxPolygon ] }
-
-
-        console.log(JSON.stringifeatureCollection)
+        const featureCollection = { type: 'FeatureCollection', crs: { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::3857" } }, features: [ bboxPolygon ] }
 
         await convert(featureCollection, 'bbox.zip', options).then( (done) => {
 
