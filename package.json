@@ -53,7 +53,7 @@
     "core-js": "^2.6.2",
     "d3": "^5.12.0",
     "d3-arrows": "^1.0.2",
-    "geotiff": "^1.0.0-beta.6",
+    "geotiff": "^1.0.9",
     "gulp-rename": "^1.2.2",
     "gulp-replace": "^0.6.1",
     "gulp-sass": "^4.0.2",
